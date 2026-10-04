@@ -1,3 +1,4 @@
+
 const shuffledFragments = [
   { id: 15, text: "and, after a time, passed the place where the Hare was sleeping." },
   { id: 12, text: "he lay down beside the course to take a nap" },
@@ -48,6 +49,7 @@ function sortFragments(fragments){
         arr[i]=arr[i+1]
         arr[i+1]=obj
         i=0
+        continue
       }
       i++
     }
@@ -55,35 +57,37 @@ function sortFragments(fragments){
   return arr
 }
 const sortedFragments= sortFragments(compactedShuffledFragments)
+console.log(sortedFragments)
 
 
 function dedupeFragments(fragments){
   const arrDep=[]
+  let cond=true
   for(let i=0 ;i<fragments.length;i++){
-    let cond=true
-    for(let j=i ;j<arrDep.length;j++){
-      if(i!==j){
-        if(arrDep[j].id===fragments[i].id){
-         console.log("[DEPUPED]")
-         cond=false
-         }
+    cond=true
+    for(let j=0 ;j<arrDep.length;j++){
+      if(arrDep[j].id === fragments[i].id){
+        console.log("[DEPUPED]")
+        cond=false
       }
+      
     }
     if(cond){
-      arrDep.push(fragments)
+      arrDep.push(fragments[i])
     }
   }
       
     return arrDep
 }
 const dedupedFragments=dedupeFragments(sortedFragments)
+console.log(dedupedFragments)
 
 
 function fillMissingFragments(fragments){
   const newFrag=[]
   newFrag.push(fragments[0])
-  for(let i=0 ;i<fragments.length-1;i++){
-    if(fragments[i].id+1===fragments[i+1].id){
+  for(let i=0 ;i<fragments.length;i++){
+    if(fragments[i].id +1===fragments[i+1].id){
       newFrag.push(fragments[i+1])
     }
     else{
@@ -98,7 +102,7 @@ const filledFragments = fillMissingFragments(dedupedFragments)
 
 
 function assemblyStory(fragments){
-  const story=""
+  let story=""
   for(i=0;i<fragments.length;i++){
     story += fragments[i].text +"\n"
   }
